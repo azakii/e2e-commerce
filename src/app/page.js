@@ -7,6 +7,9 @@ import logo from "../../public/next.svg"
 export default function Home() {
   const [items, setItems] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [productItems, setProductItems] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
+
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -16,6 +19,7 @@ export default function Home() {
         const data = await response.json();
         console.log('data: ', data)
         setItems(data);
+        setProductItems(data)
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -29,13 +33,15 @@ export default function Home() {
   const handleSearch = (query) => {
     setSearchQuery(query);
     if (query === '') {
-      setItems(data);
+      setItems(productItems);
       setLoading(false);
     } else {
-      const filteredProducts = items.filter(product =>
-        product.name && product.name.toLowerCase().includes(query.toLowerCase())
+      setLoading(true);
+      console.log("productItems:", productItems);
+      const filteredProducts = productItems.filter(product =>
+        product.name && product.name.includes(query.toLowerCase())
       );
-      setItems(filteredProducts);
+      setFilteredProducts(filteredProducts);
       setLoading(false);
     }
   };
@@ -50,20 +56,14 @@ export default function Home() {
       </div>
       <div className="productList mt-5">
         {loading ? (
-          <div>Loading...</div>
+          <div>Wait while loading the products...</div>
         ) : (
           <>
             {searchQuery === '' ? (
-              <ProductList items={items} />
+                <ProductList items={items} />
             ) : (
-              items.map(item => (
-                <>
-                  {loading ? (`<div>Loading...</div>`
-                  ) : (
-
-                    <ProductList key={item.id} items={items} />
-                  )}
-                </>
+              filteredProducts.map(filteredProduct  => (
+                <ProductList key={filteredProduct.id} items={filteredProduct} />
               ))
             )}
           </>
