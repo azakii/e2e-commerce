@@ -8,7 +8,6 @@ export default function Home() {
   const [items, setItems] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(true);
-  const [selectedCategory, setSelectedCategory] = useState('');
 
 
   useEffect(() => {
@@ -43,18 +42,28 @@ export default function Home() {
   }
 
   //catFilter
-  const catFilter = (data) => {
-    console.log(data)
-    return (
-      data.filter(
-        (item) => {
-          const categoryMatches = item.category && item.category.toLowerCase();
-          return categoryMatches
-        })
-    )
+  const [uniqueCategories, setUniqueCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState('All');
+
+  useEffect(() => {
+    // Flatten and deduplicate categories from products
+    const categories = items.map(product => product.category);
+    const uniqueCategories = ["All", ...new Set(categories)]; // Include 'All' option
+    console.log(uniqueCategories);
+    setUniqueCategories(uniqueCategories);
+  }, [items]);
+
+  const handleCategoryChange = event => {
+    setSelectedCategory(event.target.value);
   };
 
 
+  const filteredProducts =
+    selectedCategory === 'All'
+      ? items
+      : items.filter(product => product.categories.includes(selectedCategory));
+
+console.log(filteredProducts)
   return (
     <main className="main">
       <div className='handleSearch'>
@@ -64,19 +73,15 @@ export default function Home() {
         <input type="text" className='form-control' placeholder="Search by name..." value={searchQuery} onChange={e => setSearchQuery(e.target.value.toLowerCase())} />
       </div>
       <div className="productList mt-5">
+        <Tabs items={items} onChange={handleCategoryChange} uniqueCategories= {uniqueCategories} />
 
         {loading ? (
           <div>Wait while loading the products...</div>
         ) : (
           <>
-            {searchQuery === '' ? (
+            {searchQuery === '' || filteredProducts.length > 0 ? (
               <>
                 <p> count: {items.length}</p>
-                {catFilter(items).map((cat) => (
-                  <>
-                    <Tabs item={catFilter(cat)} />
-                  </>
-                ))}
                 <ProductList items={items} />
               </>
             ) : (
