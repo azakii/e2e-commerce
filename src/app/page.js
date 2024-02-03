@@ -48,8 +48,8 @@ export default function Home() {
 
   // Filter in Product using selection
   const filteredProducts = selectedCategory === 'All'
-      ? items
-      : items.filter(product => product.category === selectedCategory);
+    ? items
+    : items.filter(product => product.category === selectedCategory);
 
 
   // Filter in Product by price
