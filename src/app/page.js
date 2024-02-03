@@ -47,8 +47,7 @@ export default function Home() {
   };
 
   // Filter in Product using selection
-  const filteredProducts =
-    selectedCategory === 'All'
+  const filteredProducts = selectedCategory === 'All'
       ? items
       : items.filter(product => product.category === selectedCategory);
 
@@ -69,9 +68,7 @@ export default function Home() {
       });
 
   // displayProducts data
-  const displayProducts = searchQuery === ''
-    ? filteredProductsByPrice
-    : search(filteredProductsByPrice);
+  const displayProducts = searchQuery === '' ? filteredProductsByPrice : search(filteredProductsByPrice);
 
   return (
     <main className="main">
