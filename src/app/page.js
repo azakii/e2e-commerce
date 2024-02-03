@@ -53,6 +53,7 @@ export default function Home() {
       : items.filter(product => product.category === selectedCategory);
 
 
+  // Filter in Product by price
   const filteredProductsByPrice =
     selectedPriceRange === 'All'
       ? filteredProducts
@@ -67,6 +68,7 @@ export default function Home() {
         }
       });
 
+  // displayProducts data
   const displayProducts = searchQuery === ''
     ? filteredProductsByPrice
     : search(filteredProductsByPrice);
