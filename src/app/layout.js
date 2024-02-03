@@ -1,18 +1,20 @@
-import 'bootstrap/dist/css/bootstrap.css'
-import { Inter } from "next/font/google";
-import "./globals.scss";
-
-const inter = Inter({ subsets: ["latin"] });
+import { CartProvider } from '@/app/CartContext';
+import 'bootstrap/dist/css/bootstrap.css';
+import './globals.scss';
 
 export const metadata = {
-  title: "Ecommerce System",
-  description: "Ecommerce",
-};
+  title: 'E2E Shop',
+  description: 'Shopping store',
+}
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body>
+        <CartProvider>
+          {children}
+        </CartProvider>
+      </body>
     </html>
-  );
+  )
 }

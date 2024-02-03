@@ -2,19 +2,16 @@ import ProductItem from "../productItem/ProductItem";
 
 const ProductList = ({ items }) => {
   return (
-    <div className="container">
       <div className="item-list row">
         {items &&
-          items.map((item, i) => {
+          items.map((item) => {
+            // console.log(item)
             return (
-              <>
-                <div className="col-md-4" key={i}>
-                  <ProductItem {...item} />
+                <div className="col-md-4" key={item.id}>
+                  <ProductItem item {...item} />
                 </div>
-              </>
             );
           })}
-      </div>
     </div>
   );
 };
